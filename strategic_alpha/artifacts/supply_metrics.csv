@@ -1,0 +1,26 @@
+node,country,role,degree,in_degree,out_degree,betweenness
+TSMC,Taiwan,customer,4.11,3.16,0.95,0.012681159420289856
+UMC,Taiwan,supplier,0.22,0.0,0.22,0.0
+Micron,United States,supplier,0.52,0.0,0.52,0.0
+Corning,United States,supplier,0.15,0.0,0.15,0.0
+ON Semiconductor,United States,supplier,0.18,0.0,0.18,0.0
+Delta Electronics,Taiwan,supplier,0.2,0.0,0.2,0.0
+Jabil,United States,supplier,0.16,0.0,0.16,0.0
+Nidec,Japan,supplier,0.17,0.0,0.17,0.0
+Murata,Japan,supplier,0.19,0.0,0.19,0.0
+Infineon,Germany,supplier,0.21,0.0,0.21,0.0
+Broadcom,United States,supplier,0.26,0.0,0.26,0.0
+GlobalFoundries,United States,supplier,0.18,0.0,0.18,0.0
+Largan Precision,Taiwan,supplier,0.24,0.0,0.24,0.0
+NVDA,Unknown,customer,5.6,5.6,0.0,0.0
+Sumco,Japan,supplier,0.29,0.0,0.29,0.0
+Tokyo Electron,Japan,supplier,0.31,0.0,0.31,0.0
+KLA Corporation,United States,supplier,0.33,0.0,0.33,0.0
+Lam Research,United States,supplier,0.36,0.0,0.36,0.0
+ASML,Netherlands,supplier,0.98,0.0,0.98,0.0
+Applied Materials,United States,supplier,0.38,0.0,0.38,0.0
+ASE Technology,Taiwan,supplier,0.42,0.0,0.42,0.0
+Foxconn,Taiwan,supplier,0.72,0.0,0.72,0.0
+SK Hynix,South Korea,supplier,0.55,0.0,0.55,0.0
+Samsung,South Korea,supplier,0.65,0.0,0.65,0.0
+Pegatron,Taiwan,supplier,0.14,0.0,0.14,0.0
