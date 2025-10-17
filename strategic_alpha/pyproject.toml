@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "strategic-alpha"
+version = "0.1.0"
+description = "CLI-driven research wrapper for strategic alpha insights."
+requires-python = ">=3.12"
+readme = "README.md"
+dependencies = []
+
+[project.scripts]
+sal = "src.analyze_company:main"
+
+[tool.black]
+line-length = 88
+target-version = ["py312"]
+skip-string-normalization = false
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+select = ["E", "F", "B", "W", "I"]
+ignore = []
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+addopts = "-q"
