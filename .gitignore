@@ -1,45 +1,19 @@
-# Global ignores
-.DS_Store
-Thumbs.db
-
-# Python bytecode / build
+# Python
 __pycache__/
-*.py[cod]
-*.egg-info/
-.eggs/
-build/
-dist/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
 
-# Virtual environments
-venv/
+# Envs & OS
 .venv/
-*/venv/
-
-# Environment files
+venv/
 .env
-*.env
+.DS_Store
 
-# Editor settings
-.vscode/
-.idea/
-
-# Cache directories
-.cache/
-.mypy_cache/
-.pytest_cache/
-
-# Streamlit cache
-sal_dashboard/.streamlit/
-
-# Generated artifacts (but keep .gitkeep placeholders)
-strategic_alpha/artifacts/*
-strategic_alpha/reports/*
-sal_dashboard/artifacts/*
-sal_dashboard/reports/*
-!strategic_alpha/artifacts/.gitkeep
-!strategic_alpha/reports/.gitkeep
-!sal_dashboard/artifacts/.gitkeep
-!sal_dashboard/reports/.gitkeep
-
-# Logs
-uvicorn.log
+# Project outputs
+sal_dashboard/artifacts/
+sal_dashboard/reports/
+strategic_alpha/artifacts/
+strategic_alpha/reports/
+data/
+artifacts/
