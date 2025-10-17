@@ -19,5 +19,42 @@ python -m venv venv
 ./venv/bin/pip install --upgrade pip
 ./venv/bin/pip install -r requirements.txt
 ./venv/bin/python -m src.analyze_company full --ticker NVDA
+```
 
-eof
+```bash
+# Streamlit dashboard
+cd ../sal_dashboard
+python -m venv venv
+./venv/bin/pip install --upgrade pip
+./venv/bin/pip install -r requirements.txt
+./venv/bin/python -m streamlit run app/streamlit_app.py
+```
+
+## Repo Hygiene
+
+- `.env` files stay local; copy `.env.example` and set keys as needed.
+- Generated outputs in `artifacts/` and `reports/` are ignored except for `.gitkeep`.
+- Local virtualenvs (`venv/`) are excluded; recreate them per project when needed.
+
+## Contributing
+
+1. Create a branch: `git checkout -b feature/my-improvement`
+2. Apply changes in the relevant subproject.
+3. Run the provided `make fmt`, `make lint`, and `make test` targets where available.
+4. Commit and open a pull request.
+
+Ideas for extensions—alternate data sources, backtests, hosted deployments—are welcome!
+
+## Quickstart
+
+```bash
+git clone https://github.com/Maxy-Zou/strategic-alpha-suite.git
+cd strategic-alpha-suite
+
+# Run CLI from source (no install required)
+./scripts/sal run --ticker NVDA
+
+# Launch dashboard (Streamlit must already be installed)
+PYTHONPATH=strategic_alpha/src streamlit run sal_dashboard/app/streamlit_app.py
+```
+
