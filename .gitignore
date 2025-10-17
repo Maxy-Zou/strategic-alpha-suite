@@ -1,5 +1,8 @@
-cat > .gitignore <<'EOF'
-# Python
+# Global ignores
+.DS_Store
+Thumbs.db
+
+# Python bytecode / build
 __pycache__/
 *.py[cod]
 *.egg-info/
@@ -7,27 +10,36 @@ __pycache__/
 build/
 dist/
 
-# Virtual envs
+# Virtual environments
 venv/
 .venv/
-.env
-.env.*.local
-.env.local
+*/venv/
 
-# OS/editor
-.DS_Store
+# Environment files
+.env
+*.env
+
+# Editor settings
 .vscode/
 .idea/
 
-# Caches
+# Cache directories
 .cache/
 .mypy_cache/
 .pytest_cache/
 
-# Local data
-reports/
+# Streamlit cache
+sal_dashboard/.streamlit/
 
-# FastAPI reload artifacts
+# Generated artifacts (but keep .gitkeep placeholders)
+strategic_alpha/artifacts/*
+strategic_alpha/reports/*
+sal_dashboard/artifacts/*
+sal_dashboard/reports/*
+!strategic_alpha/artifacts/.gitkeep
+!strategic_alpha/reports/.gitkeep
+!sal_dashboard/artifacts/.gitkeep
+!sal_dashboard/reports/.gitkeep
+
+# Logs
 uvicorn.log
-EOF
-.env
