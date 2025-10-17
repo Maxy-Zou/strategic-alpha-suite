@@ -1,0 +1,17 @@
+streamlit
+pandas
+numpy
+matplotlib
+plotly
+yfinance
+networkx
+fredapi
+pandas-datareader
+scipy
+python-dotenv
+tabulate
+rich
+pydantic
+pydantic-settings
+black
+ruff

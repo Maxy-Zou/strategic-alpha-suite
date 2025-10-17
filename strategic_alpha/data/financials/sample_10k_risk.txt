@@ -1,0 +1,6 @@
+Item 1A. Risk Factors
+
+Our operating results depend on continued availability of advanced semiconductor manufacturing capacity.
+Geopolitical tension in East Asia may disrupt access to key foundry partners and critical materials.
+Rapid technological change requires sustained investment; delays in product roadmaps could erode market share.
+Supply chain concentration exposes us to transportation cost shocks and export control policy shifts.

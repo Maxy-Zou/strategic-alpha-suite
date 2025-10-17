@@ -1,0 +1,29 @@
+supplier,customer,relationship,country,weight
+TSMC,NVDA,Advanced Foundry,Taiwan,0.95
+Samsung,NVDA,HBM Supplier,South Korea,0.66
+SK Hynix,NVDA,HBM Supplier,South Korea,0.58
+Micron,NVDA,Memory Supplier,United States,0.54
+ASE Technology,NVDA,OSAT,Taiwan,0.47
+Amkor Technology,NVDA,OSAT,United States,0.42
+Foxconn,NVDA,Final Assembly,Taiwan,0.38
+Jabil,NVDA,System Integration,United States,0.28
+Delta Electronics,NVDA,Power Modules,Taiwan,0.24
+Ibiden,NVDA,Substrates,Japan,0.35
+Unimicron,NVDA,Substrates,Taiwan,0.32
+Sumitomo Electric,NVDA,Advanced Materials,Japan,0.30
+Applied Materials,TSMC,Equipment,United States,0.33
+ASML,TSMC,Lithography,Netherlands,0.98
+Lam Research,TSMC,Deposition Tools,United States,0.31
+KLA Corporation,TSMC,Metrology,United States,0.29
+Tokyo Electron,TSMC,Process Tools,Japan,0.27
+Shin-Etsu,TSMC,Wafer Supply,Japan,0.26
+GlobalWafers,TSMC,Wafer Supply,Taiwan,0.23
+Largan Precision,TSMC,Optics,Taiwan,0.21
+IBM,NVDA,Co-Design Partner,United States,0.18
+Broadcom,NVDA,Networking ASICs,United States,0.20
+Marvell,NVDA,Data Center Components,United States,0.17
+ON Semiconductor,NVDA,Power Components,United States,0.19
+Infineon,NVDA,Power Management,Germany,0.18
+Pegatron,NVDA,OEM Integration,Taiwan,0.16
+Wistron,NVDA,ODM Assembly,Taiwan,0.15
+Luxshare,NVDA,Connector Systems,China,0.14

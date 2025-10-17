@@ -1,0 +1,6 @@
+Item 1A. Risk Factors
+
+Our reliance on a concentrated group of advanced foundry partners exposes us to geopolitical and operational disruptions.
+Scaling high-bandwidth memory supply requires long lead times and tight coordination with limited vendors.
+Rapid demand cycles in AI workloads may create inventory imbalances and pricing volatility.
+Export controls and cross-border regulatory actions could restrict access to critical technologies and markets.
