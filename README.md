@@ -1,5 +1,7 @@
 ![CI](https://github.com/Maxy-Zou/strategic-alpha-suite/actions/workflows/ci.yml/badge.svg)
 
+![CI](https://github.com/Maxy-Zou/strategic-alpha-suite/actions/workflows/ci.yml/badge.svg)
+
 # Strategic Alpha Suite
 
 This repository bundles two complementary projects for semiconductor-focused investment research:
