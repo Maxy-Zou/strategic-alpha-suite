@@ -3,11 +3,10 @@
 import sys
 from pathlib import Path
 
-# Add src directory to Python path for imports
+# Add project root to Python path so we can import from src
 project_root = Path(__file__).parent.parent
-src_path = project_root / "src"
-if str(src_path) not in sys.path:
-    sys.path.insert(0, str(src_path))
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
 
 import pytest
 import pandas as pd
