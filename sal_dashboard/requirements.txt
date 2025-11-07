@@ -1,17 +1,31 @@
-streamlit
-pandas
-numpy
-matplotlib
-plotly
-yfinance
-networkx
-fredapi
-pandas-datareader
-scipy
-python-dotenv
-tabulate
-rich
-pydantic
-pydantic-settings
-black
-ruff
+# Core dependencies
+streamlit>=1.28.0
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Data fetching
+yfinance>=0.2.28
+fredapi>=0.5.0
+pandas-datareader>=0.10.0
+
+# Visualization
+matplotlib>=3.7.0
+plotly>=5.17.0
+seaborn>=0.12.0
+
+# Analysis
+scipy>=1.10.0
+networkx>=3.1
+
+# Configuration
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+# Utilities
+tabulate>=0.9.0
+rich>=13.0.0
+
+# Development (optional for deployment)
+# black>=23.0.0
+# ruff>=0.1.0

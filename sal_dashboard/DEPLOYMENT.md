@@ -100,17 +100,57 @@ docker run -d \
 docker logs -f strategic-alpha-dashboard
 ```
 
-### Option 3: Streamlit Cloud
+### Option 3: Streamlit Cloud (Recommended for Portfolio/Demo)
 
-1. Push code to GitHub
-2. Connect repository to Streamlit Cloud
-3. Add secrets in Streamlit Cloud dashboard:
-   - `FRED_API_KEY`
-   - `SEC_API_KEY`
-   - `SHOCK_PCT` (optional)
-   - `RISK_PEER_TICKERS` (optional)
-   - `SUPPLY_SHOCK_TICKERS` (optional)
-4. Deploy!
+**Step-by-Step Guide:**
+
+1. **Prepare Repository**
+   ```bash
+   # Ensure all changes are committed
+   git add .
+   git commit -m "chore: prepare for Streamlit Cloud deployment"
+   git push origin main
+   ```
+
+2. **Connect to Streamlit Cloud**
+   - Go to [share.streamlit.io](https://share.streamlit.io/)
+   - Sign in with GitHub
+   - Click "New app"
+   - Select your repository: `your-username/Stock-Finder`
+   - Main file path: `sal_dashboard/app/streamlit_app.py`
+   - App URL: Choose a custom URL (e.g., `strategic-alpha-suite`)
+
+3. **Configure Secrets**
+   - Click "Advanced settings" > "Secrets"
+   - Use the format from `.streamlit/secrets.toml.example`
+   - Paste your secrets configuration:
+
+   ```toml
+   [api_keys]
+   fred_api_key = "your_actual_fred_key"
+   sec_api_key = "your_actual_sec_key"
+
+   [settings]
+   shock_pct = -0.10
+   risk_peer_tickers = ["AMD", "AVGO", "TSM", "ASML", "INTC"]
+   supply_shock_tickers = ["TSM", "ASML"]
+   ```
+
+4. **Deploy!**
+   - Click "Deploy"
+   - Wait 2-3 minutes for initial deployment
+   - Your app will be live at: `https://your-app-name.streamlit.app`
+
+5. **Share Your Work**
+   - Add the live URL to your resume
+   - Include in LinkedIn profile: "View Live Demo"
+   - Share in GitHub README with a badge
+
+**Important Notes:**
+- Streamlit Cloud provides free hosting for public repositories
+- Apps sleep after inactivity (wake up on first access)
+- API keys are encrypted and never exposed
+- The app works without API keys but with sample data
 
 ### Option 4: Local Development
 
