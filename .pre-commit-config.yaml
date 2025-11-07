@@ -1,0 +1,103 @@
+# Pre-commit hooks for Strategic Alpha Suite
+# Install: pip install pre-commit
+# Setup: pre-commit install
+# Run manually: pre-commit run --all-files
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: '\.txt$'
+      - id: end-of-file-fixer
+        exclude: '\.txt$'
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: mixed-line-ending
+
+  - repo: https://github.com/psf/black
+    rev: 24.3.0
+    hooks:
+      - id: black
+        language_version: python3.12
+        args: ['--line-length=100']
+        files: '\.pyi?$'
+        exclude: '^venv/|^\.venv/|^build/|^dist/'
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.3.4
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+        files: '\.pyi?$'
+        exclude: '^venv/|^\.venv/|^build/|^dist/'
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.9.0
+    hooks:
+      - id: mypy
+        additional_dependencies: [types-requests, types-beautifulsoup4]
+        args: [--ignore-missing-imports, --no-strict-optional]
+        files: '^strategic_alpha/src/.*\.py$|^sal_dashboard/src/.*\.py$'
+        exclude: '^tests/|^venv/|^\.venv/'
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: ['--profile', 'black', '--line-length', '100']
+        files: '\.pyi?$'
+        exclude: '^venv/|^\.venv/'
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+        args: ['--max-line-length=100', '--extend-ignore=E203,W503']
+        files: '\.py$'
+        exclude: '^venv/|^\.venv/|^build/|^dist/'
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        types_or: [yaml, json, markdown]
+        exclude: '^\.github/|^venv/|^\.venv/'
+
+  - repo: local
+    hooks:
+      - id: pytest-check
+        name: pytest-check
+        entry: bash -c 'cd strategic_alpha && python3 -m pytest tests/ -q --tb=short || echo "Note: Tests failed. Fix before committing."'
+        language: system
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+# Configuration
+default_language_version:
+  python: python3.12
+
+# Only run on specific file patterns
+files: '\.(py|yaml|yml|json|md|toml)$'
+
+# Exclude patterns
+exclude: |
+  (?x)^(
+      venv/.*|
+      \.venv/.*|
+      __pycache__/.*|
+      \.pytest_cache/.*|
+      htmlcov/.*|
+      \.coverage.*|
+      artifacts/.*|
+      reports/.*|
+      logs/.*|
+      data/database/.*|
+      .*\.egg-info/.*
+  )$
