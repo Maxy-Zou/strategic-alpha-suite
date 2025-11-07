@@ -49,7 +49,8 @@ setup:
 	cd strategic_alpha && python3 -m venv venv && \
 		./venv/bin/pip install --upgrade pip && \
 		./venv/bin/pip install -r requirements.txt && \
-		./venv/bin/pip install pytest pytest-cov pytest-mock
+		./venv/bin/pip install pytest pytest-cov pytest-mock && \
+		./venv/bin/pip install -e .
 	@echo "Setting up Dashboard..."
 	cd sal_dashboard && python3 -m venv venv && \
 		./venv/bin/pip install --upgrade pip && \

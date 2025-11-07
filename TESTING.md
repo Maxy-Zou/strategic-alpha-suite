@@ -2,22 +2,34 @@
 
 ## Setup
 
-To run tests, you'll need to set up a virtual environment first:
+To run tests, you'll need to set up virtual environments first:
 
 ```bash
-# Create virtual environment
+# Option 1: Use the automated setup (Recommended)
+make setup
+
+# Option 2: Manual setup
+# Backend
+cd strategic_alpha
 python3 -m venv venv
-
-# Activate it
-source venv/bin/activate  # On macOS/Linux
-# or
-venv\Scripts\activate  # On Windows
-
-# Install dependencies
-pip install -r strategic_alpha/requirements.txt
-pip install -r sal_dashboard/requirements.txt
+source venv/bin/activate  # On macOS/Linux (or venv\Scripts\activate on Windows)
+pip install --upgrade pip
+pip install -r requirements.txt
 pip install pytest pytest-cov pytest-mock
+pip install -e .  # Install package in editable mode
+deactivate
+
+# Dashboard
+cd ../sal_dashboard
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+pip install pytest pytest-cov pytest-mock
+deactivate
 ```
+
+**Important**: The `-e .` flag installs the package in "editable" or "development" mode, which allows tests to import from `src` correctly.
 
 ## Running Tests
 
