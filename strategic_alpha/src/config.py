@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from functools import lru_cache
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 from pydantic import Field
 
@@ -19,8 +19,8 @@ except ImportError:  # Pydantic v1 fallback
 
 
 class _SettingsBase(BaseSettings):
-    fred_api_key: str | None = Field(default=None, validation_alias="FRED_API_KEY")
-    sec_api_key: str | None = Field(default=None, validation_alias="SEC_API_KEY")
+    fred_api_key: Optional[str] = Field(default=None, validation_alias="FRED_API_KEY")
+    sec_api_key: Optional[str] = Field(default=None, validation_alias="SEC_API_KEY")
     shock_pct: float = Field(default=-0.10, validation_alias="SHOCK_PCT")
     risk_peer_tickers: List[str] = Field(
         default_factory=lambda: ["AMD", "AVGO", "TSM", "ASML", "INTC"],
