@@ -199,7 +199,7 @@ def mock_env_vars(monkeypatch):
     monkeypatch.setenv('FRED_API_KEY', 'test_fred_key_123')
     monkeypatch.setenv('SEC_API_KEY', 'test_sec_key_456')
     monkeypatch.setenv('SHOCK_PCT', '-0.10')
-    monkeypatch.setenv('RISK_PEER_TICKERS', 'AMD,AVGO,TSM,ASML,INTC')
+    # Don't set RISK_PEER_TICKERS - Settings has defaults and will use them
 
 
 @pytest.fixture
