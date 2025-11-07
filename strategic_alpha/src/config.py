@@ -20,7 +20,9 @@ except ImportError:  # Pydantic v1 fallback
 
 class _SettingsBase(BaseSettings):
     fred_api_key: Optional[str] = Field(default=None)
-    sec_api_key: Optional[str] = Field(default=None)
+    # SEC EDGAR doesn't use API keys - it requires User-Agent with contact info
+    sec_user_name: Optional[str] = Field(default="Strategic Alpha Suite")
+    sec_user_email: Optional[str] = Field(default="user@example.com")
     shock_pct: float = Field(default=-0.10)
     risk_peer_tickers: List[str] = Field(
         default_factory=lambda: ["AMD", "AVGO", "TSM", "ASML", "INTC"],

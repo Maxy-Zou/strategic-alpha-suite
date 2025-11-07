@@ -15,17 +15,22 @@ from rich.console import Console
 console = Console()
 
 
-def fetch_10k_filing(ticker: str, user_agent: str = "Strategic Alpha Suite admin@example.com") -> Optional[str]:
+def fetch_10k_filing(ticker: str, user_agent: Optional[str] = None) -> Optional[str]:
     """
     Fetch the most recent 10-K filing for a ticker from SEC EDGAR.
 
     Args:
         ticker: Stock ticker symbol (e.g., 'NVDA')
-        user_agent: User agent string (required by SEC)
+        user_agent: User agent string (required by SEC). If None, uses default.
+                   Format: "YourName YourEmail" (e.g., "John Doe john@example.com")
 
     Returns:
         HTML content of the 10-K filing, or None if not found
     """
+    if user_agent is None:
+        # Default user agent - users should replace with their own info
+        user_agent = "Strategic Alpha Suite user@example.com"
+
     try:
         # SEC EDGAR API endpoint
         # First, get the CIK (Central Index Key) for the ticker
@@ -209,22 +214,23 @@ def generate_generic_risk_factors() -> str:
     """
 
 
-def get_risk_factors(ticker: str, data_dir: Path, sec_api_key: Optional[str] = None) -> str:
+def get_risk_factors(ticker: str, data_dir: Path, user_agent: Optional[str] = None) -> str:
     """
     Get risk factors for a company, fetching from SEC EDGAR or using fallback.
 
     Args:
         ticker: Stock ticker symbol
         data_dir: Path to data directory for fallback
-        sec_api_key: SEC API key (not required for direct EDGAR access)
+        user_agent: User-Agent header for SEC requests (format: "Name Email")
+                   If None, uses default (you should provide your own!)
 
     Returns:
         Risk factors text
     """
     console.print(f"\n[bold]Fetching Risk Factors for {ticker}...[/bold]")
 
-    # Try to fetch from SEC EDGAR
-    filing_html = fetch_10k_filing(ticker)
+    # Try to fetch from SEC EDGAR with user agent
+    filing_html = fetch_10k_filing(ticker, user_agent=user_agent)
 
     if filing_html:
         risk_factors = extract_risk_factors(filing_html)

@@ -8,8 +8,8 @@ font = "sans serif"
 [server]
 headless = true
 port = 8501
-enableCORS = false
 enableXsrfProtection = true
+# Note: CORS is automatically enabled when XSRF protection is on
 
 [browser]
 gatherUsageStats = false
