@@ -17,3 +17,9 @@ strategic_alpha/artifacts/
 strategic_alpha/reports/
 data/
 artifacts/
+
+# Runtime artifacts
+sal_dashboard/logs/
+sal_dashboard/data/database/
+*.db
+*.log

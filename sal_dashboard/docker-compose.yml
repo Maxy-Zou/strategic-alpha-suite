@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: strategic-alpha-dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      - FRED_API_KEY=${FRED_API_KEY:-}
+      - SEC_API_KEY=${SEC_API_KEY:-}
+      - SHOCK_PCT=${SHOCK_PCT:--0.10}
+      - RISK_PEER_TICKERS=${RISK_PEER_TICKERS:-AMD,AVGO,TSM,ASML,INTC}
+      - SUPPLY_SHOCK_TICKERS=${SUPPLY_SHOCK_TICKERS:-TSM,ASML}
+    volumes:
+      # Mount data directory for persistence
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./artifacts:/app/artifacts
+      - ./reports:/app/reports
+      # Mount strategic_alpha if it exists at the same level
+      - ../strategic_alpha:/app/../strategic_alpha:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8501/_stcore/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+

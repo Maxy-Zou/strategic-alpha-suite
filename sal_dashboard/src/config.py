@@ -14,6 +14,8 @@ from typing import Any, Dict, Iterable, Optional
 
 from dotenv import load_dotenv
 
+from .secrets_manager import get_secret
+
 load_dotenv()
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -77,15 +79,19 @@ def _build_settings(overrides: Optional[Dict[str, Any]] = None) -> Any:
 
     overrides = overrides or {}
     defaults: Dict[str, Any] = {
-        "fred_api_key": os.getenv("FRED_API_KEY"),
-        "sec_api_key": os.getenv("SEC_API_KEY"),
-        "shock_pct": float(os.getenv("SHOCK_PCT", "-0.10")),
+        # Use secrets manager (falls back to env vars)
+        "fred_api_key": get_secret("FRED_API_KEY") or os.getenv("FRED_API_KEY"),
+        "sec_api_key": get_secret("SEC_API_KEY") or os.getenv("SEC_API_KEY"),
+        "shock_pct": float(
+            get_secret("SHOCK_PCT") or os.getenv("SHOCK_PCT", "-0.10")
+        ),
         "risk_peer_tickers": _split_env_list(
-            os.getenv("RISK_PEER_TICKERS"),
+            get_secret("RISK_PEER_TICKERS") or os.getenv("RISK_PEER_TICKERS"),
             ["AMD", "AVGO", "TSM", "ASML", "INTC"],
         ),
         "supply_shock_tickers": _split_env_list(
-            os.getenv("SUPPLY_SHOCK_TICKERS"), ["TSM", "ASML"]
+            get_secret("SUPPLY_SHOCK_TICKERS") or os.getenv("SUPPLY_SHOCK_TICKERS"),
+            ["TSM", "ASML"]
         ),
         "data_dir": ROOT_DIR / "data",
         "artifacts_dir": ROOT_DIR / "artifacts",
