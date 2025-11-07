@@ -31,7 +31,7 @@ def test_analyze_risk_synthetic_data(monkeypatch, tmp_path):
     )
 
     def fake_download(tickers, start, end):
-        return PriceData(prices=data[tickers], info={ticker: {} for ticker in tickers})
+        return PriceData(prices=data[list(tickers)], info={ticker: {} for ticker in tickers})
 
     monkeypatch.setattr("src.risk_model.safe_download_prices", fake_download)
 

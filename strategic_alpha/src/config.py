@@ -19,16 +19,14 @@ except ImportError:  # Pydantic v1 fallback
 
 
 class _SettingsBase(BaseSettings):
-    fred_api_key: Optional[str] = Field(default=None, validation_alias="FRED_API_KEY")
-    sec_api_key: Optional[str] = Field(default=None, validation_alias="SEC_API_KEY")
-    shock_pct: float = Field(default=-0.10, validation_alias="SHOCK_PCT")
+    fred_api_key: Optional[str] = Field(default=None)
+    sec_api_key: Optional[str] = Field(default=None)
+    shock_pct: float = Field(default=-0.10)
     risk_peer_tickers: List[str] = Field(
         default_factory=lambda: ["AMD", "AVGO", "TSM", "ASML", "INTC"],
-        validation_alias="RISK_PEER_TICKERS",
     )
     supply_shock_tickers: List[str] = Field(
         default_factory=lambda: ["TSM", "ASML"],
-        validation_alias="SUPPLY_SHOCK_TICKERS",
     )
 
     @field_validator("risk_peer_tickers", "supply_shock_tickers", mode="before")
