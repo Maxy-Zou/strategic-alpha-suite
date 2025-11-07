@@ -6,9 +6,9 @@ from __future__ import annotations
 
 from functools import lru_cache
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Union
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 try:  # Pydantic v2
     from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -30,6 +30,15 @@ class _SettingsBase(BaseSettings):
         default_factory=lambda: ["TSM", "ASML"],
         validation_alias="SUPPLY_SHOCK_TICKERS",
     )
+
+    @field_validator("risk_peer_tickers", "supply_shock_tickers", mode="before")
+    @classmethod
+    def parse_comma_separated(cls, v: Union[str, List[str]]) -> List[str]:
+        """Parse comma-separated string or return list as-is."""
+        if isinstance(v, str):
+            # Split by comma and strip whitespace
+            return [ticker.strip() for ticker in v.split(",") if ticker.strip()]
+        return v
 
     data_dir: Path = Field(
         default_factory=lambda: Path(__file__).resolve().parents[1] / "data"
