@@ -1,6 +1,55 @@
-Item 1A. Risk Factors
+ITEM 1A. RISK FACTORS
 
-Our operating results depend on continued availability of advanced semiconductor manufacturing capacity.
-Geopolitical tension in East Asia may disrupt access to key foundry partners and critical materials.
-Rapid technological change requires sustained investment; delays in product roadmaps could erode market share.
-Supply chain concentration exposes us to transportation cost shocks and export control policy shifts.
+Our business, financial condition, and results of operations are subject to numerous risks and uncertainties. You should carefully consider the risks and uncertainties described below, together with all of the other information in this Annual Report on Form 10-K.
+
+RISKS RELATED TO DEMAND, SALES, AND OUR BUSINESS GENERALLY
+
+Demand for our products is difficult to forecast and may fluctuate significantly, which could harm our business and negatively impact our financial results.
+
+Demand for our products is based on many factors, including our product introductions and transitions, competitor actions, the launch of new gaming consoles, the availability of content optimized for our GPUs, economic conditions, and rapidly changing technology. We build finished products and maintain substantial inventories which can lead to write-downs if demand for our products is below our expectations or if product transitions are not managed successfully. Our sales are concentrated with a small number of customers and distributors. If we are unable to timely and accurately forecast demand, our revenue may be adversely affected.
+
+Our revenue from the datacenter market may fluctuate due to several factors including customer purchasing patterns, supply constraints, product transitions, and competition. Our datacenter customers' purchases of our products depend on factors such as datacenter infrastructure build-outs, the timing of AI model development and deployment, and overall economic conditions. A slowdown in any of these areas could materially reduce demand for our products.
+
+The semiconductor industry is highly competitive and we expect competition to increase, which could result in declining prices and market share and adversely affect our financial results.
+
+We compete with companies that have greater resources and a broader product portfolio than we do, including Advanced Micro Devices, Intel Corporation, and others. We also face competition from companies designing their own AI accelerators and GPUs, including major cloud service providers such as Amazon, Google, and Microsoft. Competition has intensified due to strong demand for AI accelerators. Our competitors may introduce products with better performance, features, or pricing, or may be more successful in selling their products. If we are unable to successfully compete, our revenue, gross margins, and market share could decline.
+
+RISKS RELATED TO SUPPLY AND MANUFACTURING
+
+We depend on third parties to manufacture and assemble our products, and any manufacturing or supply interruption would harm our ability to meet customer demand.
+
+We do not own or operate a semiconductor fabrication facility and depend on third-party foundries, primarily Taiwan Semiconductor Manufacturing Company Limited (TSMC), to manufacture substantially all of our GPUs and SoCs. Any disruption to TSMC's operations would severely impact our business. Natural disasters, including earthquakes and typhoons, geopolitical tensions, particularly involving Taiwan and China, pandemics, or other events could disrupt TSMC's manufacturing operations and our supply chain.
+
+We also rely on third parties to perform the assembly, testing, and packaging of most of our products. The loss of any of these suppliers or a significant manufacturing disruption could delay or reduce product shipments and negatively impact our operating results.
+
+We depend on a limited number of suppliers for certain components, and any supply interruption or shortage would harm our ability to meet customer demand.
+
+We purchase materials and components from a limited number of suppliers, some of which are sole-source suppliers. In particular, we depend on suppliers for high bandwidth memory (HBM), advanced packaging substrates, and other critical components. Any shortage of these components, or the inability of our suppliers to scale production to meet our requirements, would limit our ability to fulfill customer orders. We have in the past experienced, and may in the future experience, supply shortages that prevent us from meeting customer demand.
+
+Our dependence on TSMC's advanced process technology for our leading-edge products creates supply risks. TSMC's most advanced processes have limited capacity, and we compete with other companies for that capacity. If TSMC is unable to allocate sufficient capacity to us, or if yields are lower than expected, our product launches could be delayed and our revenue could be adversely affected.
+
+RISKS RELATED TO INTERNATIONAL OPERATIONS AND GEOPOLITICAL ISSUES
+
+Our business is subject to risks associated with international operations, including trade restrictions, export controls, and tariffs.
+
+A majority of our revenue is from sales to customers outside the United States, and we have operations in many countries. Our international operations subject us to risks including trade restrictions, export and import controls, tariffs, changes in U.S. or foreign government policies, and currency fluctuations. The U.S. government has imposed restrictions on exports to China of certain of our products and products that include our GPUs. These restrictions have limited and could in the future further limit our ability to sell products to customers in China, which is a significant market for our products. Additional restrictions could be imposed that would further limit sales to China or to customers in other countries.
+
+The ongoing geopolitical tensions between the United States and China, and between China and Taiwan, create significant risks for our business. A significant portion of our products are manufactured in Taiwan, and any military conflict or political instability in the region could disrupt our supply chain and operations. If the situation deteriorates, we may be unable to procure sufficient quantities of our products, which would materially harm our business.
+
+RISKS RELATED TO PRODUCT DEVELOPMENT AND INTELLECTUAL PROPERTY
+
+If we fail to develop and introduce new products in a timely manner, or if our products contain defects, our business and reputation would be harmed.
+
+Our success depends on our ability to develop and introduce new products and technologies that provide increasingly better performance and functionality. Our product development cycles are long and require significant investment. If we fail to innovate or if our products do not perform as expected, customers may purchase products from our competitors. Product design errors or manufacturing defects can result in costly recalls, customer dissatisfaction, or damage to our reputation.
+
+The continuing rapid development of artificial intelligence technology creates both opportunities and risks for our business. If we fail to capitalize on the AI opportunity or if AI development slows, demand for our products could be adversely affected. Additionally, open-source AI models and increased competition in AI hardware could reduce demand for our products or put pressure on our pricing and margins.
+
+RISKS RELATED TO REGULATORY AND LEGAL MATTERS
+
+We are subject to laws and regulations worldwide, many of which are evolving and could lead to legal claims or enforcement actions.
+
+Our global operations subject us to numerous laws and regulations, including those related to privacy, data security, content moderation, competition, export controls, and others. These laws and regulations are complex and evolving. Failure to comply could result in significant fines, legal liability, or operational restrictions. For example, the European Union and other jurisdictions have adopted or are considering comprehensive data protection and privacy laws that impose significant compliance costs and potential liability.
+
+Antitrust and competition law regulators in the United States and other jurisdictions are scrutinizing our business practices and those of other large technology companies. Any determination that we have violated antitrust or competition laws could result in significant fines, restrictions on our business practices, or other remedies that could adversely affect our business and results of operations.
+
+Our products and services may be used in applications that raise safety, ethical, or societal concerns. The use of AI in particular has raised concerns about privacy, bias, misinformation, and other issues. Negative public perception or regulatory responses to these concerns could harm our brand and limit our ability to sell products in certain applications or markets.
