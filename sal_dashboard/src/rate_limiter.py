@@ -17,6 +17,11 @@ from typing import Any, Callable, TypeVar
 T = TypeVar("T")
 
 
+class RateLimitExceeded(Exception):
+    """Raised when rate limit is exceeded (test compatibility)."""
+    pass
+
+
 class RateLimiter:
     """
     Rate limiter with per-API throttling and exponential backoff.
@@ -34,26 +39,45 @@ class RateLimiter:
         max_calls_per_hour: int = 1000,
         backoff_factor: float = 2.0,
         max_backoff_seconds: int = 300,
+        # Test compatibility parameters
+        calls_per_minute: int = None,
+        calls_per_hour: int = None,
     ):
         """
         Initialize rate limiter.
-        
+
         Args:
             max_calls_per_minute: Maximum API calls per minute per key
             max_calls_per_hour: Maximum API calls per hour per key
             backoff_factor: Multiplier for exponential backoff
             max_backoff_seconds: Maximum backoff time in seconds
+            calls_per_minute: Alias for max_calls_per_minute (test compatibility)
+            calls_per_hour: Alias for max_calls_per_hour (test compatibility)
         """
+        # Handle test compatibility aliases
+        if calls_per_minute is not None:
+            max_calls_per_minute = calls_per_minute
+        if calls_per_hour is not None:
+            max_calls_per_hour = calls_per_hour
+
         self.max_calls_per_minute = max_calls_per_minute
         self.max_calls_per_hour = max_calls_per_hour
+        # Test compatibility attributes
+        self.calls_per_minute = max_calls_per_minute
+        self.calls_per_hour = max_calls_per_hour
+
         self.backoff_factor = backoff_factor
         self.max_backoff_seconds = max_backoff_seconds
-        
+
         # Track calls per API key
         self.minute_calls: dict[str, list[datetime]] = defaultdict(list)
         self.hour_calls: dict[str, list[datetime]] = defaultdict(list)
         self.backoff_until: dict[str, datetime] = {}
         self.lock = Lock()
+
+        # Test compatibility: single call history
+        self._default_api_key = "default"
+        self.call_history: list[float] = []  # Unix timestamps
 
     def _cleanup_old_calls(self, api_key: str) -> None:
         """Remove calls older than 1 hour."""
@@ -190,6 +214,170 @@ class RateLimiter:
             return wrapper
         return decorator
 
+    # Test compatibility methods
+    def _sync_call_history(self) -> None:
+        """Sync call_history with the internal tracking for default API key."""
+        # Convert datetime objects to Unix timestamps
+        self.call_history = [
+            dt.timestamp()
+            for dt in (self.minute_calls[self._default_api_key] +
+                      self.hour_calls[self._default_api_key])
+        ]
+        # Remove duplicates and sort
+        self.call_history = sorted(list(set(self.call_history)))
+
+    def check_rate_limit(self) -> None:
+        """
+        Check if rate limit allows a new call (test compatibility).
+
+        Raises:
+            RateLimitExceeded: If rate limit would be exceeded
+        """
+        with self.lock:
+            self._cleanup_old_calls(self._default_api_key)
+
+            # Check minute limit
+            if len(self.minute_calls[self._default_api_key]) >= self.max_calls_per_minute:
+                raise RateLimitExceeded(
+                    f"Per-minute rate limit exceeded ({self.max_calls_per_minute} calls/min)"
+                )
+
+            # Check hour limit
+            if len(self.hour_calls[self._default_api_key]) >= self.max_calls_per_hour:
+                raise RateLimitExceeded(
+                    f"Per-hour rate limit exceeded ({self.max_calls_per_hour} calls/hour)"
+                )
+
+            # Record the call
+            self._record_call(self._default_api_key)
+            self._sync_call_history()
+
+    def wait_for_rate_limit(self) -> None:
+        """Wait until rate limit allows a new call (test compatibility)."""
+        with self.lock:
+            self._wait_if_needed(self._default_api_key)
+            self._record_call(self._default_api_key)
+            self._sync_call_history()
+
+    def rate_limited_call(
+        self,
+        func: Callable[..., T],
+        *args: Any,
+        max_retries: int = 3,
+        **kwargs: Any
+    ) -> T:
+        """
+        Execute a function with rate limiting and retries (test compatibility).
+
+        Args:
+            func: Function to execute
+            *args: Positional arguments for func
+            max_retries: Maximum retry attempts
+            **kwargs: Keyword arguments for func
+
+        Returns:
+            Result of function execution
+        """
+        retry_count = 0
+        last_exception = None
+
+        while retry_count <= max_retries:
+            try:
+                # Check rate limit before calling
+                with self.lock:
+                    self._wait_if_needed(self._default_api_key)
+                    self._record_call(self._default_api_key)
+                    self._sync_call_history()
+
+                # Execute function
+                return func(*args, **kwargs)
+
+            except Exception as e:
+                last_exception = e
+                retry_count += 1
+
+                if retry_count > max_retries:
+                    raise
+
+                # Exponential backoff
+                backoff_time = self._calculate_backoff(retry_count)
+                time.sleep(backoff_time)
+
+        # Should not reach here, but raise last exception if we do
+        if last_exception:
+            raise last_exception
+
+    def get_wait_time(self) -> float:
+        """
+        Get seconds to wait before next call is allowed (test compatibility).
+
+        Returns:
+            Seconds to wait (0 if no wait needed)
+        """
+        with self.lock:
+            # Sync call_history into internal structures if manually added
+            if self.call_history:
+                for timestamp in self.call_history:
+                    dt = datetime.utcfromtimestamp(timestamp)
+                    if dt not in self.minute_calls[self._default_api_key]:
+                        self.minute_calls[self._default_api_key].append(dt)
+                    if dt not in self.hour_calls[self._default_api_key]:
+                        self.hour_calls[self._default_api_key].append(dt)
+
+            self._cleanup_old_calls(self._default_api_key)
+
+            now = datetime.utcnow()
+
+            # Check minute limit
+            if len(self.minute_calls[self._default_api_key]) >= self.max_calls_per_minute:
+                oldest_call = min(self.minute_calls[self._default_api_key])
+                wait_until = oldest_call + timedelta(minutes=1)
+                minute_wait = (wait_until - now).total_seconds()
+                if minute_wait > 0:
+                    return minute_wait
+
+            # Check hour limit
+            if len(self.hour_calls[self._default_api_key]) >= self.max_calls_per_hour:
+                oldest_call = min(self.hour_calls[self._default_api_key])
+                wait_until = oldest_call + timedelta(hours=1)
+                hour_wait = (wait_until - now).total_seconds()
+                if hour_wait > 0:
+                    return hour_wait
+
+            return 0
+
+    def reset(self) -> None:
+        """Clear all rate limit history (test compatibility)."""
+        with self.lock:
+            self.minute_calls.clear()
+            self.hour_calls.clear()
+            self.backoff_until.clear()
+            self.call_history.clear()
+
+    def _calculate_backoff(self, attempt: int) -> float:
+        """
+        Calculate exponential backoff time (test compatibility).
+
+        Args:
+            attempt: Retry attempt number (1-indexed)
+
+        Returns:
+            Backoff time in seconds
+        """
+        backoff = min(
+            self.backoff_factor ** attempt,
+            self.max_backoff_seconds
+        )
+        return backoff
+
+    def __enter__(self):
+        """Context manager entry (test compatibility)."""
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """Context manager exit (test compatibility)."""
+        return False
+
 
 class RateLimitError(Exception):
     """Raised when rate limit cannot be satisfied."""
@@ -219,5 +407,8 @@ def get_rate_limiter(
     return _global_rate_limiter
 
 
-__all__ = ["RateLimiter", "RateLimitError", "RateLimitException", "get_rate_limiter"]
+__all__ = [
+    "RateLimiter", "RateLimitError", "RateLimitException",
+    "RateLimitExceeded", "get_rate_limiter"
+]
 

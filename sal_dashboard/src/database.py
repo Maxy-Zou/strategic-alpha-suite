@@ -103,15 +103,15 @@ class DashboardDB:
             
             # Create indexes
             cursor.execute("""
-                CREATE INDEX IF NOT EXISTS idx_valuation_runs_ticker_timestamp 
+                CREATE INDEX IF NOT EXISTS idx_valuation_ticker_time
                 ON valuation_runs(ticker, timestamp)
             """)
             cursor.execute("""
-                CREATE INDEX IF NOT EXISTS idx_api_calls_timestamp 
+                CREATE INDEX IF NOT EXISTS idx_api_timestamp
                 ON api_calls(timestamp)
             """)
             cursor.execute("""
-                CREATE INDEX IF NOT EXISTS idx_user_interactions_timestamp 
+                CREATE INDEX IF NOT EXISTS idx_interaction_timestamp
                 ON user_interactions(timestamp)
             """)
             
@@ -353,5 +353,113 @@ def get_db() -> DashboardDB:
     return _global_db
 
 
-__all__ = ["DashboardDB", "get_db", "DB_PATH"]
+# Wrapper functions for backward compatibility with tests
+def init_database(db_path: str = None) -> None:
+    """Initialize database (test compatibility wrapper)."""
+    if db_path:
+        DashboardDB(Path(db_path))
+    else:
+        get_db()
+
+
+def log_valuation_run(
+    db_path: str,
+    ticker: str,
+    start_date: str,
+    end_date: str,
+    peers: Iterable[str],
+    dcf_value: float,
+    equity_value: float,
+    equity_value_per_share: float,
+    user_inputs: Optional[Dict[str, Any]] = None,
+) -> int:
+    """Log valuation run (test compatibility wrapper)."""
+    db = DashboardDB(Path(db_path))
+    return db.save_valuation_run(
+        ticker, start_date, end_date, peers, dcf_value,
+        equity_value, equity_value_per_share, user_inputs
+    )
+
+
+def log_api_call(
+    db_path: str,
+    api_name: str,
+    endpoint: Optional[str] = None,
+    status_code: Optional[int] = None,
+    response_time_ms: Optional[int] = None,
+    success: bool = True,
+    error_message: Optional[str] = None,
+) -> int:
+    """Log API call (test compatibility wrapper)."""
+    db = DashboardDB(Path(db_path))
+    return db.log_api_call(
+        api_name, endpoint, status_code, response_time_ms, success, error_message
+    )
+
+
+def log_user_interaction(
+    db_path: str,
+    session_id: Optional[str] = None,
+    action: str = "",
+    ticker: Optional[str] = None,
+    parameters: Optional[Dict[str, Any]] = None,
+) -> int:
+    """Log user interaction (test compatibility wrapper)."""
+    db = DashboardDB(Path(db_path))
+    return db.log_user_interaction(action, session_id, ticker, parameters)
+
+
+def log_error(
+    db_path: str,
+    error_type: str,
+    error_message: str,
+    stack_trace: Optional[str] = None,
+    context: Optional[str] = None,
+    ticker: Optional[str] = None,
+) -> int:
+    """Log error (test compatibility wrapper)."""
+    db = DashboardDB(Path(db_path))
+    context_dict = {"context": context} if context and isinstance(context, str) else None
+    return db.log_error(error_type, error_message, stack_trace, context_dict, ticker)
+
+
+def get_valuation_history(
+    db_path: str,
+    ticker: Optional[str] = None,
+    limit: int = 100,
+) -> list:
+    """Get valuation history (test compatibility wrapper)."""
+    db = DashboardDB(Path(db_path))
+    results = db.get_valuation_history(ticker, limit)
+    # Convert dict results to tuple format expected by tests
+    return [
+        (
+            r['id'], r['ticker'], r['start_date'], r['end_date'],
+            r['peers'], r['dcf_value'], r['equity_value'],
+            r['equity_value_per_share'], r['user_inputs']
+        )
+        for r in results
+    ]
+
+
+def get_recent_errors(db_path: str, limit: int = 100) -> list:
+    """Get recent errors (test compatibility wrapper)."""
+    db = DashboardDB(Path(db_path))
+    with db._get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT * FROM error_logs
+            ORDER BY id DESC
+            LIMIT ?
+        """, (limit,))
+        return cursor.fetchall()
+
+
+__all__ = [
+    "DashboardDB", "get_db", "DB_PATH",
+    # Test compatibility wrappers
+    "init_database", "log_valuation_run", "log_api_call",
+    "log_user_interaction", "log_error", "get_valuation_history",
+    "get_recent_errors"
+]
 
