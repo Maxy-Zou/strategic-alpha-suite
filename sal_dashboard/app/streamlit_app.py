@@ -3,20 +3,40 @@ Streamlit application providing an interactive view of strategic alpha analytics
 """
 
 from __future__ import annotations
-
-from datetime import date, datetime, timedelta
-from pathlib import Path
-from typing import Any, Dict, Iterable, List, Tuple
-
-import pandas as pd
-import streamlit as st
-import yfinance as yf
-
 from app.components.charts import dcf_heatmap, macro_chart, price_chart, risk_histogram
 from app.components.kpi_cards import render_kpi_cards
 from app.components.tables import format_chokepoints, format_comps
 from src import macro, risk, supply, valuation
 from src.config import ROOT_DIR, get_settings
+import yfinance as yf
+import streamlit as st
+import pandas as pd
+
+# ============================================================================
+# STANDARD LIBRARY IMPORTS - Must come first
+# ============================================================================
+import sys
+from datetime import date, datetime, timedelta
+from pathlib import Path
+from typing import Any, Dict, Iterable
+
+# ============================================================================
+# PATH SETUP - CRITICAL: Must happen BEFORE importing from 'app' or 'src'
+# ============================================================================
+# Add sal_dashboard directory to Python path so 'app' and 'src' packages
+# can be imported. This MUST be done before any imports from those packages.
+sal_dashboard_dir = Path(__file__).resolve().parent.parent
+if str(sal_dashboard_dir) not in sys.path:
+    sys.path.insert(0, str(sal_dashboard_dir))
+
+# ============================================================================
+# THIRD-PARTY IMPORTS
+# ============================================================================
+
+# ============================================================================
+# LOCAL IMPORTS - Must come AFTER path setup above
+# ============================================================================
+# DO NOT MOVE THESE IMPORTS ABOVE THE PATH SETUP - they will fail!
 
 
 def _format_dollar(value: float | None) -> str:
@@ -207,7 +227,8 @@ def main() -> None:
     supply_metrics_df = supply.supply_metrics(supply_result)
     chokepoints_df = supply.chokepoints_table(supply_result)
 
-    price_series, base_inputs = valuation.base_dcf_inputs(ticker, start_str, end_str)
+    price_series, base_inputs = valuation.base_dcf_inputs(
+        ticker, start_str, end_str)
     valuation_result = valuation.load_valuation_result(
         ticker=ticker,
         start=start_str,
@@ -218,7 +239,8 @@ def main() -> None:
     comps_df = valuation_result.comps
 
     dcf_overrides = _dcf_override_inputs(base_inputs)
-    overridden_inputs = valuation.override_dcf_inputs(base_inputs, dcf_overrides)
+    overridden_inputs = valuation.override_dcf_inputs(
+        base_inputs, dcf_overrides)
     dcf_result = valuation.run_dcf_model(overridden_inputs)
 
     risk_result = risk.load_risk_result(
@@ -236,8 +258,10 @@ def main() -> None:
     kpi_values = [
         _format_dollar(info.get("marketCap")),
         _format_dollar(info.get("enterpriseValue") or info.get("marketCap")),
-        f"{info.get('trailingPE', float('nan')):.2f}" if info.get("trailingPE") else "NA",
-        f"{info.get('ebitdaMargins', float('nan'))*100:.2f}%" if info.get("ebitdaMargins") else "NA",
+        f"{info.get('trailingPE', float('nan')):.2f}" if info.get(
+            "trailingPE") else "NA",
+        f"{info.get('ebitdaMargins', float('nan'))*100:.2f}%" if info.get(
+            "ebitdaMargins") else "NA",
     ]
 
     overview_tab, macro_tab, supply_tab, valuation_tab, risk_tab, report_tab = st.tabs(
@@ -247,7 +271,8 @@ def main() -> None:
     with overview_tab:
         render_kpi_cards(kpi_labels, kpi_values)
         st.subheader("Price Performance")
-        st.plotly_chart(price_chart(_last_12m(price_series)), use_container_width=True)
+        st.plotly_chart(price_chart(_last_12m(price_series)),
+                        use_container_width=True)
 
     with macro_tab:
         st.plotly_chart(macro_chart(macro_df), use_container_width=True)
@@ -257,7 +282,8 @@ def main() -> None:
         st.plotly_chart(
             supply.supply_graph_figure(supply_result), use_container_width=True
         )
-        st.dataframe(format_chokepoints(chokepoints_df), use_container_width=True)
+        st.dataframe(format_chokepoints(chokepoints_df),
+                     use_container_width=True)
         st.download_button(
             label="Download Supply Metrics CSV",
             data=supply.metrics_csv_bytes(supply_metrics_df),
@@ -268,7 +294,8 @@ def main() -> None:
     with valuation_tab:
         st.subheader("Discounted Cash Flow")
         cols = st.columns(3)
-        cols[0].metric("PV of Cash Flows", _format_dollar(sum(dcf_result["present_value"].values())))
+        cols[0].metric("PV of Cash Flows", _format_dollar(
+            sum(dcf_result["present_value"].values())))
         cols[1].metric(
             "Terminal Value",
             _format_dollar(dcf_result["terminal_value"]),
@@ -277,7 +304,8 @@ def main() -> None:
             "Equity Value / Share",
             f"${dcf_result['equity_value_per_share']:.2f}",
         )
-        st.plotly_chart(dcf_heatmap(dcf_result["sensitivity"]), use_container_width=True)
+        st.plotly_chart(dcf_heatmap(
+            dcf_result["sensitivity"]), use_container_width=True)
 
         st.subheader("Relative Comps")
         st.dataframe(format_comps(comps_df), use_container_width=True)
@@ -310,7 +338,8 @@ def main() -> None:
         st.write(
             f"Stress shock {stress_info['shock_pct']:.2%} → portfolio impact {stress_info['portfolio_loss']:.2%}"
         )
-        st.plotly_chart(risk_histogram(portfolio_returns), use_container_width=True)
+        st.plotly_chart(risk_histogram(portfolio_returns),
+                        use_container_width=True)
 
     with report_tab:
         st.subheader("Generate Markdown Report")
@@ -331,7 +360,8 @@ def main() -> None:
             peers=[p for p in peer_selection if p != ticker],
         )
         if st.button("Save Report"):
-            report_path = ROOT_DIR / "reports" / f"{ticker.upper()}_dashboard_memo.md"
+            report_path = ROOT_DIR / "reports" / \
+                f"{ticker.upper()}_dashboard_memo.md"
             report_path.write_text(report_text, encoding="utf-8")
             st.success(f"Report written to {report_path}")
         st.download_button(

@@ -53,6 +53,8 @@ def _load_backend_module(module_name: str):
         raise ImportError(f"Unable to load module {module_name}")
 
     module = importlib.util.module_from_spec(spec)
+    # Set __package__ so relative imports work
+    module.__package__ = package_prefix
     sys.modules[module_key] = module
     spec.loader.exec_module(module)
     return module

@@ -5,3 +5,10 @@ numpy
 networkx
 matplotlib
 requests
+pydantic
+pydantic-settings
+rich
+tabulate
+scipy
+fredapi
+python-dotenv

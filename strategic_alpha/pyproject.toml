@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.scripts]
-sal = "strategic_alpha.cli:app"
+sal = "strategic_alpha.analyze_company:app"
 
 [build-system]
 requires = ["setuptools<=58.0.4", "wheel"]

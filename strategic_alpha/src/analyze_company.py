@@ -33,8 +33,10 @@ def _clone_settings(settings: Settings, **updates) -> Settings:
 
 @app.command()
 def macro(
-    ticker: str = typer.Option("NVDA", "--ticker", "-t", help="Target ticker (unused, for symmetry)."),
-    start: str = typer.Option("2015-01-01", "--start", help="Start date for macro series."),
+    ticker: str = typer.Option(
+        "NVDA", "--ticker", "-t", help="Target ticker (unused, for symmetry)."),
+    start: str = typer.Option("2015-01-01", "--start",
+                              help="Start date for macro series."),
     end: str = typer.Option(
         datetime.now(timezone.utc).strftime("%Y-%m-%d"), "--end", help="End date."
     ),
@@ -46,7 +48,8 @@ def macro(
     table.add_column("Metric")
     table.add_column("Value")
     table.add_row("CPI YoY", f"{result.metrics['cpi_yoy']:.2f}%")
-    table.add_row("Unemployment Rate", f"{result.metrics['unemployment_rate']:.2f}%")
+    table.add_row("Unemployment Rate",
+                  f"{result.metrics['unemployment_rate']:.2f}%")
     table.add_row("Fed Funds Rate", f"{result.metrics['fed_funds_rate']:.2f}%")
     table.add_row(
         "Industrial Production YoY",
@@ -58,7 +61,8 @@ def macro(
 
 @app.command()
 def supply(
-    ticker: str = typer.Option("NVDA", "--ticker", "-t", help="Target ticker."),
+    ticker: str = typer.Option(
+        "NVDA", "--ticker", "-t", help="Target ticker."),
 ) -> None:
     """Analyze supply chain network."""
     settings = get_settings()
@@ -71,15 +75,18 @@ def supply(
 
 @app.command()
 def valuation(
-    ticker: str = typer.Option("NVDA", "--ticker", "-t", help="Target ticker."),
-    start: str = typer.Option("2021-01-01", "--start", help="Start date for price history."),
+    ticker: str = typer.Option(
+        "NVDA", "--ticker", "-t", help="Target ticker."),
+    start: str = typer.Option("2021-01-01", "--start",
+                              help="Start date for price history."),
     end: str = typer.Option(
         datetime.now(timezone.utc).strftime("%Y-%m-%d"), "--end", help="End date."
     ),
 ) -> None:
     """Run valuation analysis."""
     settings = get_settings()
-    result = run_valuation(ticker=ticker, settings=settings, start=start, end=end)
+    result = run_valuation(
+        ticker=ticker, settings=settings, start=start, end=end)
     dcf_value = result.dcf_summary["equity_value_per_share"]
     price = result.price_series.iloc[-1]
     console.print(f"DCF intrinsic value per share: ${dcf_value:.2f}")
@@ -90,43 +97,69 @@ def valuation(
 
 @app.command()
 def risk(
-    ticker: str = typer.Option("NVDA", "--ticker", "-t", help="Target ticker."),
-    start: str = typer.Option("2021-01-01", "--start", help="Start date for returns."),
+    ticker: str = typer.Option(
+        "NVDA", "--ticker", "-t", help="Target ticker."),
+    start: str = typer.Option("2021-01-01", "--start",
+                              help="Start date for returns."),
     end: str = typer.Option(
         datetime.now(timezone.utc).strftime("%Y-%m-%d"), "--end", help="End date."
     ),
-    shock_pct: float = typer.Option(None, "--shock-pct", help="Override shock percentage (e.g. -0.1)."),
+    shock_pct: float = typer.Option(
+        None, "--shock-pct", help="Override shock percentage (e.g. -0.1)."),
 ) -> None:
     """Compute risk metrics and stress tests."""
     settings = get_settings()
     settings = _clone_settings(settings, shock_pct=shock_pct)
-    result = analyze_risk(ticker=ticker, settings=settings, start=start, end=end)
+    result = analyze_risk(
+        ticker=ticker, settings=settings, start=start, end=end)
     console.print("Historical VaR:", result.var_results["historical"])
-    console.print("Variance-Covariance VaR:", result.var_results["variance_covariance"])
+    console.print("Variance-Covariance VaR:",
+                  result.var_results["variance_covariance"])
     console.print("Stress test:", result.stress_results)
     console.print(f"VaR saved to: {result.var_path}")
     console.print(f"Stress results saved to: {result.stress_path}")
 
 
-@app.command()
-def full(
-    ticker: str = typer.Option("NVDA", "--ticker", "-t", help="Target ticker."),
-    start: str = typer.Option("2021-01-01", "--start", help="Start date for analysis."),
+@app.command(name="run")
+def run(
+    ticker: str = typer.Option(
+        "NVDA", "--ticker", "-t", help="Target ticker."),
+    start: str = typer.Option("2021-01-01", "--start",
+                              help="Start date for analysis."),
     end: str = typer.Option(
         datetime.now(timezone.utc).strftime("%Y-%m-%d"), "--end", help="End date."
     ),
-    shock_pct: float = typer.Option(None, "--shock-pct", help="Override supply shock."),
+    shock_pct: float = typer.Option(
+        None, "--shock-pct", help="Override supply shock."),
+) -> None:
+    """Run the full strategic alpha pipeline (alias for 'full')."""
+    full(ticker=ticker, start=start, end=end, shock_pct=shock_pct)
+
+
+@app.command()
+def full(
+    ticker: str = typer.Option(
+        "NVDA", "--ticker", "-t", help="Target ticker."),
+    start: str = typer.Option("2021-01-01", "--start",
+                              help="Start date for analysis."),
+    end: str = typer.Option(
+        datetime.now(timezone.utc).strftime("%Y-%m-%d"), "--end", help="End date."
+    ),
+    shock_pct: float = typer.Option(
+        None, "--shock-pct", help="Override supply shock."),
 ) -> None:
     """Run the full strategic alpha pipeline."""
     settings = get_settings()
     settings = _clone_settings(settings, shock_pct=shock_pct)
 
-    macro_result = macro_snapshot(settings=settings, start="2015-01-01", end=end)
+    macro_result = macro_snapshot(
+        settings=settings, start="2015-01-01", end=end)
     supply_result = analyze_supply_chain(settings)
     valuation_result = run_valuation(
         ticker=ticker, settings=settings, start=start, end=end
     )
-    risk_result = analyze_risk(ticker=ticker, settings=settings, start=start, end=end)
+    risk_result = analyze_risk(
+        ticker=ticker, settings=settings, start=start, end=end)
 
     report_path = render_markdown_report(
         ticker=ticker,
@@ -157,7 +190,8 @@ def full(
             supply_result.chokepoints.iloc[0]["node"],
         ],
     ]
-    console.print(tabulate(summary_rows[1:], headers=summary_rows[0], tablefmt="github"))
+    console.print(
+        tabulate(summary_rows[1:], headers=summary_rows[0], tablefmt="github"))
     console.print(f"Report generated at: {report_path}")
 
 

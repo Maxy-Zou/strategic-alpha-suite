@@ -7,4 +7,4 @@ cli:
 	./scripts/sal run --ticker NVDA
 
 dashboard:
-	PYTHONPATH=strategic_alpha/src streamlit run sal_dashboard/app/streamlit_app.py
+	cd sal_dashboard && PYTHONPATH=../strategic_alpha/src streamlit run app/streamlit_app.py

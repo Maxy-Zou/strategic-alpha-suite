@@ -1,7 +1,4 @@
 ![CI](https://github.com/Maxy-Zou/strategic-alpha-suite/actions/workflows/ci.yml/badge.svg)
-
-![CI](https://github.com/Maxy-Zou/strategic-alpha-suite/actions/workflows/ci.yml/badge.svg)
-
 # Strategic Alpha Suite
 
 This repository bundles two complementary projects for semiconductor-focused investment research:
@@ -21,7 +18,9 @@ cd strategic-alpha-suite
 ./scripts/sal run --ticker NVDA
 
 # Launch Streamlit dashboard (requires streamlit in your env)
-PYTHONPATH=strategic_alpha/src streamlit run sal_dashboard/app/streamlit_app.py
+cd sal_dashboard && PYTHONPATH=../strategic_alpha/src streamlit run app/streamlit_app.py
+# Or from project root:
+# PYTHONPATH=strategic_alpha/src streamlit run sal_dashboard/app/streamlit_app.py
 ```
 
 _The CLI currently prints a demo line; wire it into the macro/supply/valuation/risk modules next. The dashboard command should be executed from an environment where `streamlit` is installed._
