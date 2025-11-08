@@ -25,16 +25,19 @@ class StructuredFormatter(logging.Formatter):
     
     def format(self, record: logging.LogRecord) -> str:
         """Format log record with structured data."""
+        # Create asctime attribute using formatTime
+        record.asctime = self.formatTime(record, self.datefmt)
+
         # Add module and function name
         record.module = record.name.split('.')[-1]
         record.function = record.funcName
-        
+
         # Format exception info if present
         if record.exc_info:
             record.exception_text = self.formatException(record.exc_info)
         else:
             record.exception_text = ""
-        
+
         # Build log message
         log_msg = (
             f"[{record.levelname:8s}] {record.asctime} | "

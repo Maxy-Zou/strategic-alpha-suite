@@ -24,10 +24,11 @@ class _SettingsBase(BaseSettings):
     sec_user_name: Optional[str] = Field(default="Strategic Alpha Suite")
     sec_user_email: Optional[str] = Field(default="user@example.com")
     shock_pct: float = Field(default=-0.10)
-    risk_peer_tickers: List[str] = Field(
+    # Use Union[str, List[str]] to prevent Pydantic from trying JSON parsing on env vars
+    risk_peer_tickers: Union[str, List[str]] = Field(
         default_factory=lambda: ["AMD", "AVGO", "TSM", "ASML", "INTC"],
     )
-    supply_shock_tickers: List[str] = Field(
+    supply_shock_tickers: Union[str, List[str]] = Field(
         default_factory=lambda: ["TSM", "ASML"],
     )
 
