@@ -3,26 +3,14 @@ Streamlit application providing an interactive view of strategic alpha analytics
 """
 
 from __future__ import annotations
-from app.components.charts import dcf_heatmap, macro_chart, price_chart, risk_histogram
-from app.components.kpi_cards import render_kpi_cards
-from app.components.tables import format_chokepoints, format_comps
-from src import macro, risk, supply, valuation
-from src.config import ROOT_DIR, get_settings
-from src.logging_config import setup_logging, get_logger, PerformanceLogger
-from src.database import get_db
-from src.rate_limiter import get_rate_limiter
-from src.health import check_health, get_metrics
-import yfinance as yf
-import streamlit as st
-import pandas as pd
-import traceback
-import time
 
 # ============================================================================
 # STANDARD LIBRARY IMPORTS - Must come first
 # ============================================================================
 import re
 import sys
+import time
+import traceback
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, Iterable
@@ -39,11 +27,23 @@ if str(sal_dashboard_dir) not in sys.path:
 # ============================================================================
 # THIRD-PARTY IMPORTS
 # ============================================================================
+import pandas as pd
+import streamlit as st
+import yfinance as yf
 
 # ============================================================================
 # LOCAL IMPORTS - Must come AFTER path setup above
 # ============================================================================
 # DO NOT MOVE THESE IMPORTS ABOVE THE PATH SETUP - they will fail!
+from app.components.charts import dcf_heatmap, macro_chart, price_chart, risk_histogram
+from app.components.kpi_cards import render_kpi_cards
+from app.components.tables import format_chokepoints, format_comps
+from src import macro, risk, supply, valuation
+from src.config import ROOT_DIR, get_settings
+from src.database import get_db
+from src.health import check_health, get_metrics
+from src.logging_config import get_logger, setup_logging
+from src.rate_limiter import get_rate_limiter
 
 
 def _format_dollar(value: float | None) -> str:
