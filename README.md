@@ -9,7 +9,7 @@
 
 **Institutional-grade investment research platform for semiconductor companies**
 
-[Live Demo](https://strategic-alpha.streamlit.app) • [Documentation](#documentation) • [Quick Start](#quickstart)
+🚧 [Live Demo](https://strategic-alpha.streamlit.app) (deploying soon) • [Documentation](#documentation) • [Quick Start](#quickstart)
 
 </div>
 
@@ -26,6 +26,23 @@ Strategic Alpha Suite is a comprehensive investment research toolkit that combin
 - **DCF Valuation with Sensitivity Analysis**: Institutional-grade models with WACC vs growth heatmaps
 - **Offline-First Architecture**: Works without API keys using deterministic fallbacks
 - **Production-Ready**: Logging, monitoring, health checks, rate limiting, and comprehensive test coverage
+
+### 💼 Skills Demonstrated
+
+This project showcases professional software engineering practices valued by employers:
+
+| Category | Skills |
+|----------|---------|
+| **Backend Development** | Python 3.12+, Typer CLI, Pydantic validation, async operations |
+| **Frontend/UI** | Streamlit dashboards, responsive design, interactive visualizations |
+| **Data Engineering** | ETL pipelines, data validation, API integration (FRED, SEC EDGAR, yfinance) |
+| **Financial Analysis** | DCF modeling, VaR calculations, supply chain network analysis, risk assessment |
+| **Database** | SQLite, ORM patterns, migration strategies, query optimization |
+| **Testing** | pytest (80%+ coverage), fixtures, mocking, integration tests, CI/CD |
+| **DevOps** | Docker, docker-compose, multi-stage builds, health checks, logging |
+| **Code Quality** | Black, ruff, mypy, pre-commit hooks, type hints, documentation |
+| **Architecture** | Modular design, separation of concerns, offline-first, graceful degradation |
+| **Production Readiness** | Rate limiting, structured logging, error handling, monitoring, secrets management |
 
 ### 🏗️ Architecture
 
@@ -69,7 +86,7 @@ Strategic Alpha Suite is a comprehensive investment research toolkit that combin
 
 <div align="center">
 
-![Dashboard Overview](docs/dashboard_overview.png)
+📸 *Dashboard screenshots coming soon - see [Quick Start](#quickstart) to run locally*
 
 </div>
 
@@ -295,8 +312,12 @@ Create `.env` file (optional - works without):
 # Economic Data (optional - has CSV fallback)
 FRED_API_KEY=your_fred_api_key_here
 
-# SEC Filings (optional - not currently required)
-SEC_API_KEY=your_sec_api_key_here
+# SEC EDGAR Configuration (NO API KEY NEEDED!)
+# SEC requires a User-Agent header with your name and email
+# Format: "Your Name your.email@example.com"
+# See: https://www.sec.gov/os/accessing-edgar-data
+SEC_USER_NAME=Your Name
+SEC_USER_EMAIL=your.email@example.com
 
 # Analysis Parameters
 SHOCK_PCT=-0.10                          # Default shock for stress tests
@@ -305,8 +326,8 @@ SUPPLY_SHOCK_TICKERS=TSM,ASML
 ```
 
 **Get API Keys (Free):**
-- FRED: https://fred.stlouisfed.org/docs/api/api_key.html
-- SEC: Not required (direct EDGAR access works without key)
+- FRED: https://fred.stlouisfed.org/docs/api/api_key.html (optional but recommended)
+- SEC EDGAR: No API key needed! Just provide your contact info per SEC guidelines
 
 ---
 
@@ -408,7 +429,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 ## 📞 Contact
 
 **Max Zou**
-[GitHub](https://github.com/Maxy-Zou) • [LinkedIn](https://linkedin.com/in/maxyzou) • [Email](mailto:max@example.com)
+[GitHub](https://github.com/Maxy-Zou) • [LinkedIn](https://linkedin.com/in/maxyzou) • [Email](mailto:maxzou0325@gmail.com)
 
 ---
 
